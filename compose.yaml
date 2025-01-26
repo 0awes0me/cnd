@@ -101,6 +101,7 @@ services:
     environment:
       APP_URL: "http://cnd_vue.test"
       BACKEND_URL: "http://cnd_laravel.test"
+      VITE_API_URL: "TEST"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.vue.rule=Host(`cnd_vue.test`)"

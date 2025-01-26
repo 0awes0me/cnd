@@ -33,7 +33,8 @@ class SaveContactForm extends AbstractAction
 
         return response()->json([
             'message' => __('Created !'),
-            'data'    => $form
+            'data'    => $form,
+            'success' => true,
         ]);
     }
 

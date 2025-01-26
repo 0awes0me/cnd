@@ -8,7 +8,6 @@
       <sourceFolder url="file://$MODULE_DIR$/cnd_laravel/tests" isTestSource="true" packagePrefix="Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/cnd_laravel/spec" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/cnd_laravel/vendor/brick/math" />
       <excludeFolder url="file://$MODULE_DIR$/cnd_laravel/vendor/carbonphp/carbon-doctrine-types" />
       <excludeFolder url="file://$MODULE_DIR$/cnd_laravel/vendor/composer" />
@@ -146,6 +145,18 @@
       <excludeFolder url="file://$MODULE_DIR$/cnd_laravel/vendor/spatie/invade" />
       <excludeFolder url="file://$MODULE_DIR$/cnd_laravel/vendor/spatie/laravel-package-tools" />
       <excludeFolder url="file://$MODULE_DIR$/cnd_laravel/vendor/symfony/html-sanitizer" />
+      <excludeFolder url="file://$MODULE_DIR$/cnd_laravel/vendor/brianium/paratest" />
+      <excludeFolder url="file://$MODULE_DIR$/cnd_laravel/vendor/fidry/cpu-core-counter" />
+      <excludeFolder url="file://$MODULE_DIR$/cnd_laravel/vendor/jean85/pretty-package-versions" />
+      <excludeFolder url="file://$MODULE_DIR$/cnd_laravel/vendor/pestphp/pest" />
+      <excludeFolder url="file://$MODULE_DIR$/cnd_laravel/vendor/pestphp/pest-plugin" />
+      <excludeFolder url="file://$MODULE_DIR$/cnd_laravel/vendor/pestphp/pest-plugin-arch" />
+      <excludeFolder url="file://$MODULE_DIR$/cnd_laravel/vendor/pestphp/pest-plugin-mutate" />
+      <excludeFolder url="file://$MODULE_DIR$/cnd_laravel/vendor/phpdocumentor/reflection-common" />
+      <excludeFolder url="file://$MODULE_DIR$/cnd_laravel/vendor/phpdocumentor/reflection-docblock" />
+      <excludeFolder url="file://$MODULE_DIR$/cnd_laravel/vendor/phpdocumentor/type-resolver" />
+      <excludeFolder url="file://$MODULE_DIR$/cnd_laravel/vendor/phpstan/phpdoc-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/cnd_laravel/vendor/ta-tikoma/phpunit-architecture-test" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

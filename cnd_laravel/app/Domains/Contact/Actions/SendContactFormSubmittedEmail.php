@@ -30,7 +30,6 @@ class SendContactFormSubmittedEmail extends AbstractAction
     {
         //minor hack;
         $adminEmail = env('ADMIN_EMAIL', 'admin@example.com');
-
         $adminMailBody = view('email/contactFormSubmittedEmail', ['data' => $data])
             ->render();
 

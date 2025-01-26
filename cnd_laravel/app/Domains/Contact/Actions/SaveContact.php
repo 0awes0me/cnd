@@ -35,11 +35,13 @@ class SaveContact extends AbstractAction
         } catch (\Exception $e) {
             return response()->json([
                 'message' => __('Unable to create contact'),
+                'success' => false,
             ], 417);
         }
         return response()->json([
             'message' => __('Contact Created !'),
             'data'    => $contact,
+            'success' => true,
         ]);
     }
 

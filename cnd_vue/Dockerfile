@@ -5,10 +5,11 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run build
-COPY . .
 
 
 FROM php:8.2-apache as production-stage
+
+COPY --from=build-stage /app/dist /var/www/frontend
 
 RUN sed -i 's|/var/www/frontend|/var/www/frontend/assets|g' /etc/apache2/sites-available/000-default.conf
 

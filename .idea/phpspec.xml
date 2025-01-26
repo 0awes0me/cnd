@@ -14,6 +14,9 @@
       <PhpSpecSuiteConfiguration>
         <option name="myPath" value="$PROJECT_DIR$/cnd_laravel" />
       </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="myPath" value="$PROJECT_DIR$/cnd_laravel" />
+      </PhpSpecSuiteConfiguration>
     </suites>
   </component>
 </project>
