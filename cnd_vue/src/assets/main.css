@@ -1,0 +1,6 @@
+@import './base.css';
+
+@theme {
+    --font-bebas: "Bebas Neue", "sans-serif";
+    --font-playwrite: "Playwrite AU QLD", "sans-serif";
+}

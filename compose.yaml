@@ -1,0 +1,168 @@
+services:
+  # Mailhog Server
+  mailhog:
+    container_name: mailhog
+    restart: always
+    image: 42bv/mailhog:latest
+    ports:
+      - "587:587"
+      - "8025:8025"
+    volumes:
+      - mailhog-volume:/srv/Maildir
+    networks:
+      - laravel
+
+
+  # Database Server
+  db:
+    container_name: db
+    restart: always
+    image: mysql:8.4
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_DATABASE: cnd_db
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: 123
+    command: --init-file /data/application/init.sql
+    volumes:
+      - db-data3:/var/lib/mysql
+      - ./etc/mysql/mysql_init.sql:/data/application/init.sql
+    networks:
+      - laravel
+
+  traefik:
+    image: traefik:v2.9
+    container_name: hetzner-traefik
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+    ports:
+      - "80:80"   # HTTP
+      - "444:443" # HTTPS
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./letsencrypt:/letsencrypt"
+    networks:
+      - laravel
+
+
+  php:
+    image: laravel
+    container_name: laravel
+    build:
+      context: ./cnd_laravel
+    ports:
+      - "82:8090"
+    environment:
+      APP_URL: "http://cnd_laravel.test"
+      QUEUE_CONNECTION: database
+      APP_ENV: production
+      APP_DEBUG: "true"
+      APP_KEY: base64:R1Q4nfqcatnGETkrFY9k9v03wm8YwhreZtEUHIf8o6g=
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: cnd_db
+      DB_USERNAME: dev
+      DB_PASSWORD: 123
+      MAIL_MAILER: smtp
+      MAIL_HOST: localhost
+      MAIL_PORT: 587
+    user: root
+    volumes:
+      - ./cnd_laravel:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - laravel
+    restart: always
+    entrypoint: /bin/sh /var/www/html/laravel.entrypoint.sh
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.laravel.rule=Host(`cnd_laravel.test`)"
+      - "traefik.http.routers.laravel-secure.rule=Host(`cnd_laravel.test`)"
+      - "traefik.http.services.laravel.loadbalancer.server.port=80"  # Traefik will forward traffic to container port 80
+
+
+  vue:
+    container_name: vue
+    build:
+      dockerfile: Dockerfile
+      context: cnd_vue
+    volumes:
+      - ./cnd_vue/dist:/var/www/frontend
+      - /var/www/frontend/node_modules
+    ports:
+      - "83:81"
+    environment:
+      APP_URL: "http://cnd_vue.test"
+      BACKEND_URL: "http://cnd_laravel.test"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vue.rule=Host(`cnd_vue.test`)"
+      - "traefik.http.routers.vue-secure.rule=Host(`cnd_vue.test`)"
+      - "traefik.http.services.vue.loadbalancer.server.port=80"  # Traefik will forward traffic to container port 80
+    networks:
+      - laravel
+    restart: always
+
+
+
+    # Redis Server
+  redis:
+    image: redis:alpine
+    command: redis-server --appendonly yes --requirepass  "${REDIS_PASSWORD}"
+    ports:
+      - 6379:6379
+
+  laravel-queue-worker:
+    image: laravel  # Reference the existing image built for laravel-app
+    container_name: laravel-queue-worker
+    command: php artisan queue:work --queue=default --sleep=3 --tries=3 --max-time=3600
+    ports:
+      - "91:8091"
+    environment:
+      APP_URL: "http://cnd_laravel.test"
+      QUEUE_CONNECTION: database
+      APP_ENV: production
+      APP_DEBUG: "true"
+      APP_KEY: base64:R1Q4nfqcatnGETkrFY9k9v03wm8YwhreZtEUHIf8o6g=
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: cnd_db
+      DB_USERNAME: dev
+      DB_PASSWORD: 123
+      MAIL_MAILER: smtp
+      MAIL_HOST: localhost
+      MAIL_PORT: 587
+    user: root
+
+    depends_on:
+      - db
+    networks:
+      - laravel
+    restart: always
+    entrypoint: /bin/sh /var/www/html/laravel.entrypoint.sh
+
+  # Node Server
+#    node:
+#        build:
+#            context: .
+#            target: node
+#        volumes:
+#            - .:/usr/src
+#            - ./node_modules:/usr/src/node_modules
+#        tty: true
+
+volumes:
+  db-data3: ~
+  mailhog-volume: ~
+
+networks:
+  laravel:
+    driver: bridge
