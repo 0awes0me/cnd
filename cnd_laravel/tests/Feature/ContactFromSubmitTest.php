@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(RefreshDatabase::class);
 
 it('successfully submits the contact form', function () {
-    $response = $this->postJson('/contact-form', [
+    $response = $this->postJson('/api/contact-form', [
         'name'    => 'John Doe',
         'email'   => 'john@example.com',
         'subject' => 'Inquiry',
@@ -21,7 +21,7 @@ it('successfully submits the contact form', function () {
 });
 
 it('validates required fields', function () {
-    $response = $this->postJson('/contact-form', [
+    $response = $this->postJson('/api/contact-form', [
         'name'    => '',
         'email'   => 'invalid-email',
         'subject' => '',
