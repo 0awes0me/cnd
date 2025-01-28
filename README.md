@@ -1,5 +1,25 @@
 # Conda Test Project
 
+# Setup
+
+Update hosts file to contain following two lines
+
+```
+127.0.0.1 cnd_vue
+127.0.0.1 cnd_laravel
+```
+
+### Hosts file location
+
+#### macOS
+
+`/etc/hosts`
+
+#### Windows
+
+`c:\Windows\System32\Drivers\etc\hosts.`
+
+
 # Run the project
 
 RUN `docker-compose up --build`
@@ -29,7 +49,3 @@ Domain file structure:
                 - ItemModel
             - ETC
 
-# Caveats
-
-Frontend may have trouble building with docker.
-In that case run `npm run build` and then run docker;
